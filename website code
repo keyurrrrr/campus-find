@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Smart Campus Lost &amp; Found</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+:root{--bg:#e9eef0;--panel:#f7f9fa;--ink:#14232b;--muted:#4b5f69;--steel:#1f5c66;--steel-d:#16444c;--tag:#f2c230;--line:#c6d2d7;--door:#cfdadf;--bad:#b3261e;--ok:#1b6e3a;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1a1f;--panel:#16252c;--ink:#e6eef1;--muted:#9bb0ba;--steel:#5fb3c1;--steel-d:#1b3a43;--line:#2a3d46;--door:#22353d;--bad:#ff8a80;--ok:#7bd49a}}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16.5px/1.55 "IBM Plex Sans",system-ui,sans-serif}
+h1,h2,h3{font-family:"Bricolage Grotesque","Arial Narrow",system-ui,sans-serif;line-height:1.1;margin:0 0 14px}
+h1{font-size:clamp(36px,6vw,64px);font-weight:800}h2{font-size:clamp(26px,4vw,36px);font-weight:800}h3{font-size:20px;font-weight:800}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+p{margin:0 0 12px;max-width:64ch}.mut{color:var(--muted)}.sm{font-size:14px}
+header.top{position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--line);z-index:5}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;flex-wrap:wrap}
+.nav b{font:800 18px "Bricolage Grotesque",sans-serif}
+.nav a{color:var(--muted);text-decoration:none;margin-left:16px;font-weight:500;padding:4px 0;border-bottom:2px solid transparent}
+.nav a.on{color:var(--ink);border-color:var(--tag)}
+main{padding:36px 0 60px;min-height:70vh}
+.btn{display:inline-block;padding:11px 18px;border-radius:6px;font:500 15px "IBM Plex Sans",sans-serif;text-decoration:none;border:2px solid var(--steel);background:transparent;color:var(--steel);cursor:pointer}
+.btn.p{background:var(--steel);color:#fff}.btn.sm{padding:6px 11px;font-size:13px}.btn.bad{border-color:var(--bad);color:var(--bad)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn.p{color:#0f1a1f}}
+:focus-visible{outline:3px solid var(--tag);outline-offset:2px}
+.btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:20px}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.g2{display:grid;gap:16px;grid-template-columns:1fr 1fr}.g4{display:grid;gap:14px;grid-template-columns:repeat(4,1fr)}
+label{display:block;font-weight:500;margin:12px 0 4px;font-size:14.5px}
+input,select,textarea{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);font:inherit}
+textarea{min-height:80px;resize:vertical}
+.seg{display:flex;gap:8px;flex-wrap:wrap}.seg label{display:flex;gap:6px;align-items:center;margin:0;font-weight:400;padding:8px 12px;border:1px solid var(--line);border-radius:6px;background:var(--bg)}
+.seg input{width:auto}
+.pill{display:inline-block;font-size:12px;font-weight:500;padding:2px 8px;border-radius:99px;background:var(--tag);color:#14232b}
+.pill.lost{background:#e7b7b3}.pill.done{background:#b7e0c3}
+.item img{width:100%;height:130px;object-fit:cover;border-radius:6px;margin-bottom:10px;background:var(--door)}
+.item h3{margin:6px 0 4px;font-size:18px}
+.stat strong{display:block;font:800 34px/1 "Bricolage Grotesque",sans-serif;color:var(--steel)}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:36px;align-items:center;padding:20px 0 30px}
+.bank{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;background:var(--steel-d);padding:10px;border-radius:10px}
+.lk{aspect-ratio:3/4;background:var(--door);border-radius:4px;font-size:12px;padding:6px;display:flex;flex-direction:column;justify-content:space-between}
+.lk.full{background:var(--tag);color:#14232b}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;list-style:none;padding:0;margin:0;counter-reset:s}
+.steps li{counter-increment:s;border-top:4px solid var(--steel);padding-top:12px}
+.steps li::before{content:counter(s);display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--tag);color:#14232b;font-weight:800;margin-bottom:8px}
+.qr{background:#fff;padding:8px;border-radius:6px;display:inline-block}
+.code{font:800 34px "Bricolage Grotesque",sans-serif;letter-spacing:.14em;background:var(--tag);color:#14232b;padding:6px 14px;border-radius:6px;display:inline-block}
+.msg{padding:12px 14px;border-radius:6px;margin:12px 0;border:1px solid var(--line);background:var(--panel)}
+.msg.bad{border-color:var(--bad);color:var(--bad)}.msg.ok{border-color:var(--ok);color:var(--ok)}
+table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:middle}
+.scroll{overflow-x:auto}
+.keys{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:260px;margin:12px 0}.key{padding:14px 0;font:800 20px "Bricolage Grotesque",sans-serif;border:1px solid var(--line);border-radius:6px;background:var(--door);color:var(--ink);cursor:pointer}.key:active{background:var(--tag);color:#14232b}#u{max-width:260px;font:800 24px "Bricolage Grotesque",sans-serif;letter-spacing:.3em;text-align:center}
+.filters{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px;margin-bottom:18px}
+@media (max-width:800px){.hero,.g2{grid-template-columns:1fr}.g4,.steps{grid-template-columns:1fr 1fr}.filters{grid-template-columns:1fr}}
+@media (max-width:480px){.steps{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap nav"><b>Smart Campus Lost &amp; Found</b>
+<nav id="nav"><a href="#home" data-v="home">Home</a><a href="#report" data-v="report">Report</a><a href="#browse" data-v="browse">Browse</a><a href="#claim" data-v="claim">Claim</a><a href="#admin" data-v="admin">Admin</a></nav></div></header>
+<main class="wrap" id="app"></main>
+<footer class="wrap mut sm" style="padding-bottom:30px">MIT School of Computing project. Demo data is stored in this browser only.</footer>
+
+<script>
+(function(){
+var K="slf_v1",PASS="admin123",CATS=["Electronics","ID / Cards","Bags","Keys","Books & stationery","Clothing","Bottles & other"];
+var S=load(),adminOK=false,app=document.getElementById("app");
+function load(){try{var s=JSON.parse(localStorage.getItem(K));if(s&&s.items&&s.lockers)return s}catch(e){}return{items:[],lockers:Array(10).fill(null)}}
+function save(){try{localStorage.setItem(K,JSON.stringify(S));return true}catch(e){return false}}
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function rnd(n,chars){var o="";for(var i=0;i<n;i++)o+=chars[Math.floor(Math.random()*chars.length)];return o}
+function uid(){return Date.now().toString(36)+rnd(4,"abcdefghijklmnopqrstuvwxyz")}
+function today(){return new Date().toISOString().slice(0,10)}
+function find(id){return S.items.filter(function(x){return x.id===id})[0]}
+function byTag(t){t=(t||"").trim().toUpperCase();return S.items.filter(function(x){return x.tag===t&&x.type==="found"})[0]}
+function words(t){return(t||"").toLowerCase().match(/[a-z0-9]{3,}/g)||[]}
+function matches(it){var w=words(it.name+" "+it.desc);return S.items.filter(function(o){return o.type!==it.type&&o.status!=="claimed"&&o.cat===it.cat}).map(function(o){return{o:o,s:words(o.name+" "+o.desc).filter(function(x){return w.indexOf(x)>-1}).length}}).filter(function(x){return x.s>0}).sort(function(a,b){return b.s-a.s}).map(function(x){return x.o})}
+function label(it){return it.status==="claimed"?"Returned":it.status==="matched"?"Matched":it.type==="found"?(it.locker?"In locker "+it.locker:"At central desk"):"Reported"}
+function release(it){if(it.locker){S.lockers[it.locker-1]=null}it.status="claimed";var p=it.matchId&&find(it.matchId);if(p)p.status="claimed"}
+function qr(el,text){if(window.QRCode){try{new QRCode(el,{text:text,width:120,height:120});return}catch(e){}}el.textContent=text}
+function card(it,claimBtn){
+return'<div class="card item">'+(it.photo?'<img alt="" src="'+esc(it.photo)+'">':"")+'<span class="pill '+(it.type==="lost"?"lost":"")+(it.status==="claimed"?" done":"")+'">'+(it.type==="lost"?"Lost":"Found")+" · "+esc(label(it))+'</span><h3>'+esc(it.name)+'</h3><p class="mut sm">'+esc(it.cat)+" · "+esc(it.loc)+" · "+esc(it.date)+'</p><p class="sm">'+esc(it.desc)+'</p>'+(claimBtn&&it.type==="found"&&it.status!=="claimed"?'<a class="btn sm p" href="#claim/'+esc(it.tag)+'">Claim this item</a>':"")+"</div>"}
+
+var V={};
+V.home=function(){
+var f=S.items.filter(function(x){return x.type==="found"}),c=f.filter(function(x){return x.status==="claimed"}).length,used=S.lockers.filter(Boolean).length,lk="";
+S.lockers.forEach(function(x,i){lk+='<div class="lk'+(x?" full":"")+'"><b>L'+(i+1)+"</b><span>"+(x?"Occupied":"Free")+"</span></div>"});
+return'<div class="hero"><div><h1>Reimagining Campus Lost &amp; Found.</h1><p class="mut" style="font-size:19px">Fast, secure, and friction-free asset recovery powered by smart lockers and connected web software.</p><div class="btns"><a class="btn p" href="#report">Report a Lost Item</a><a class="btn" href="#claim">Claim an Item</a></div></div><div><div class="bank" aria-label="Live locker status">'+lk+'</div><p class="mut sm" style="margin-top:8px">Live status of the 10-locker pilot ('+used+' in use).</p></div></div>'+
+'<div class="g4" style="margin:10px 0 40px"><div class="card stat"><strong>'+S.items.length+'</strong>items logged</div><div class="card stat"><strong>'+f.length+'</strong>found items</div><div class="card stat"><strong>'+c+'</strong>returned to owners</div><div class="card stat"><strong>'+(f.length?Math.round(c/f.length*100):0)+'%</strong>recovery rate</div></div>'+
+'<h2>The problem</h2><p style="font-size:19px">Disjointed physical logs, paper tags, and overwhelmed storage rooms cause delays, wasted staff hours, and low recovery rates across busy campuses.</p>'+
+'<h2 style="margin-top:36px">How it works</h2><ol class="steps"><li><h3>Report</h3><p class="mut sm">Submit item details, location, and a photo.</p></li><li><h3>Tag</h3><p class="mut sm">A QR tracking tag is generated instantly.</p></li><li><h3>Store</h3><p class="mut sm">The item goes into a free smart locker or central inventory.</p></li><li><h3>Retrieve</h3><p class="mut sm">Verify with your campus ID, get a one-time code, and collect.</p></li></ol>'+
+'<h2 style="margin-top:36px">Projected impact</h2><div class="g4" style="grid-template-columns:repeat(3,1fr)"><div class="card stat"><strong>60%</strong>less staff time (up to)</div><div class="card stat"><strong>70%</strong>projected recovery rate</div><div class="card stat"><strong>+25%</strong>NPS uplift</div></div>'+
+'<div class="card" style="margin-top:36px;background:var(--steel-d);color:#fff"><h2>Built for scalable university deployment.</h2><p>Pilot specification: 10 lockers, 3-month rollout. Try the full flow here, then open the Admin dashboard.</p><div class="btns"><a class="btn p" style="background:var(--tag);border-color:var(--tag);color:#14232b" href="#admin">Open admin dashboard</a></div></div>'};
+
+V.report=function(){
+var o="";CATS.forEach(function(c){o+="<option>"+esc(c)+"</option>"});
+return'<h2>Report an item</h2><form id="rf" class="card"><div class="seg"><label><input type="radio" name="type" value="lost" checked> I lost something</label><label><input type="radio" name="type" value="found"> I found something</label></div>'+
+'<div class="g2"><div><label for="n">Item name</label><input id="n" name="name" required maxlength="60" placeholder="e.g. Black Casio calculator"></div><div><label for="c">Category</label><select id="c" name="cat">'+o+'</select></div></div>'+
+'<label for="d">Description</label><textarea id="d" name="desc" required maxlength="300" placeholder="Colour, brand, marks, contents"></textarea>'+
+'<div class="g2"><div><label for="l">Location</label><input id="l" name="loc" required maxlength="60" placeholder="e.g. Library, 2nd floor"></div><div><label for="dt">Date</label><input id="dt" type="date" name="date" value="'+today()+'" max="'+today()+'" required></div></div>'+
+'<div class="g2"><div><label for="ct">Your email or phone</label><input id="ct" name="contact" required maxlength="80"></div><div><label for="ph">Photo (optional)</label><input id="ph" type="file" accept="image/*"></div></div>'+
+'<div id="st" style="display:none"><label>Where did you leave it?</label><div class="seg"><label><input type="radio" name="store" value="locker" checked> Smart locker</label><label><input type="radio" name="store" value="central"> Central desk</label></div></div>'+
+'<div class="btns" style="margin-top:18px"><button class="btn p" type="submit">Submit report</button></div></form><div id="out"></div>'};
+
+V.browse=function(){
+var o='<option value="">All categories</option>';CATS.forEach(function(c){o+="<option>"+esc(c)+"</option>"});
+return'<h2>Browse items</h2><div class="filters"><input id="q" placeholder="Search name, description, location" aria-label="Search"><select id="ft" aria-label="Type"><option value="">Lost &amp; found</option><option value="found">Found</option><option value="lost">Lost</option></select><select id="fc" aria-label="Category">'+o+'</select></div><div class="grid" id="list"></div>'};
+function fillList(){
+var q=(document.getElementById("q").value||"").toLowerCase(),t=document.getElementById("ft").value,c=document.getElementById("fc").value;
+var r=S.items.filter(function(x){return(!t||x.type===t)&&(!c||x.cat===c)&&(!q||(x.name+" "+x.desc+" "+x.loc).toLowerCase().indexOf(q)>-1)}).sort(function(a,b){return b.created-a.created});
+document.getElementById("list").innerHTML=r.length?r.map(function(x){return card(x,true)}).join(""):'<p class="mut">No items yet. <a href="#report">Report one</a> or load demo data from the Admin page.</p>'}
+
+V.claim=function(arg){
+return'<h2>Claim an item</h2><div class="g2"><form id="cf" class="card"><h3>1. Verify</h3><label for="t">Item tag ID</label><input id="t" value="'+esc(arg||"")+'" placeholder="LF-XXXXX" required><label for="s">Campus ID</label><input id="s" required placeholder="6–12 letters or digits" maxlength="12"><p class="mut sm" style="margin-top:10px">Demo check: any 6–12 character alphanumeric ID is accepted. A real deployment would verify against the campus ID system.</p><button class="btn p" type="submit">Get one-time code</button></form>'+
+'<div class="card" id="cs"><h3>2. Collect</h3><p class="mut">Your code will appear here after verification.</p></div></div>'};
+
+V.admin=function(){
+if(!adminOK)return'<h2>Admin dashboard</h2><form id="af" class="card" style="max-width:380px"><label for="pw">Passcode</label><input id="pw" type="password" required autocomplete="off"><p class="mut sm" style="margin-top:10px">Demo passcode: admin123. This check runs in the browser, so it is a demo gate, not real security.</p><button class="btn p" type="submit">Sign in</button><p id="ae" class="sm" style="color:var(--bad)"></p></form>';
+var f=S.items.filter(function(x){return x.type==="found"}),l=S.items.length-f.length,c=f.filter(function(x){return x.status==="claimed"}).length,used=S.lockers.filter(Boolean).length,lk="",rows="";
+S.lockers.forEach(function(x,i){var it=x&&find(x);lk+='<div class="lk'+(x?" full":"")+'"><b>L'+(i+1)+"</b><span>"+(it?esc(it.tag):"Free")+"</span></div>"});
+S.items.slice().sort(function(a,b){return b.created-a.created}).forEach(function(it){rows+="<tr><td>"+esc(it.tag)+"</td><td>"+it.type+"</td><td>"+esc(it.name)+"</td><td>"+esc(label(it))+'</td><td>'+(it.status!=="claimed"?'<button class="btn sm" data-act="ret" data-id="'+it.id+'">Mark returned</button> ':"")+'<button class="btn sm bad" data-act="del" data-id="'+it.id+'">Delete</button></td></tr>'});
+return'<h2>Admin dashboard</h2><div class="g4"><div class="card stat"><strong>'+f.length+'</strong>found items</div><div class="card stat"><strong>'+l+'</strong>lost reports</div><div class="card stat"><strong>'+(f.length?Math.round(c/f.length*100):0)+'%</strong>recovery rate</div><div class="card stat"><strong>'+used+"/10</strong>lockers in use</div></div>"+
+'<h3 style="margin-top:28px">Smart lockers</h3><div class="bank">'+lk+'</div><h3 style="margin-top:28px">Inventory</h3><div class="card scroll"><table><thead><tr><th>Tag</th><th>Type</th><th>Item</th><th>Status</th><th>Actions</th></tr></thead><tbody>'+(rows||'<tr><td colspan="5" class="mut">No items.</td></tr>')+'</tbody></table></div>'+
+'<div class="btns" style="margin-top:20px"><button class="btn" data-act="seed">Load demo data</button><button class="btn bad" data-act="reset">Reset all data</button><button class="btn" data-act="out">Sign out</button></div>'};
+
+function route(){
+var h=(location.hash||"#home").slice(1).split("/"),v=V[h[0]]?h[0]:"home";
+app.innerHTML=V[v](h[1]);
+Array.prototype.forEach.call(document.querySelectorAll("#nav a"),function(a){a.className=a.getAttribute("data-v")===v?"on":""});
+if(v==="browse")fillList();window.scrollTo(0,0)}
+window.addEventListener("hashchange",route);
+
+function photo(file){return new Promise(function(res){if(!file)return res(null);var r=new FileReader();r.onerror=function(){res(null)};r.onload=function(){var im=new Image();im.onerror=function(){res(null)};im.onload=function(){var k=Math.min(1,360/im.width),cv=document.createElement("canvas");cv.width=im.width*k;cv.height=im.height*k;cv.getContext("2d").drawImage(im,0,0,cv.width,cv.height);res(cv.toDataURL("image/jpeg",.6))};im.src=r.result};r.readAsDataURL(file)})}
+
+function create(d){
+var it={id:uid(),tag:"LF-"+rnd(5,"ABCDEFGHJKLMNPQRSTUVWXYZ23456789"),type:d.type,name:d.name,cat:d.cat,desc:d.desc,loc:d.loc,date:d.date,contact:d.contact,photo:d.photo||null,status:d.type==="found"?"stored":"reported",locker:null,created:Date.now()};
+if(d.type==="found"&&d.store==="locker"){var i=S.lockers.indexOf(null);if(i>-1){S.lockers[i]=it.id;it.locker=i+1}}
+var m=matches(it);if(d.type==="found"&&m.length){it.matchId=m[0].id;m[0].matchId=it.id;m[0].status="matched"}
+S.items.push(it);return{it:it,m:m}}
+
+function result(r){
+var it=r.it,out=document.getElementById("out"),where=it.type==="found"?(it.locker?"Place it in <b>locker "+it.locker+"</b>.":"Hand it to the <b>central desk</b>"+(document.querySelector('[name=store]:checked').value==="locker"?" (all lockers are full).":".")):"We will match it against found items automatically.";
+var h='<div class="card" style="margin-top:20px"><h3>Report received</h3><p>'+where+'</p><p class="mut sm">Tag ID: <b>'+esc(it.tag)+'</b>. Print or attach this QR code to the item.</p><div class="qr" id="qrb"></div></div>';
+if(it.type==="found"&&r.m.length)h+='<div class="msg ok">This matches '+r.m.length+" lost report(s). The owner has been flagged for notification (demo).</div>";
+if(it.type==="lost"){h+=r.m.length?'<h3 style="margin-top:20px">Possible matches</h3><div class="grid">'+r.m.map(function(x){return card(x,true)}).join("")+"</div>":'<div class="msg">No matching found items yet. Check Browse later.</div>'}
+out.innerHTML=h;qr(document.getElementById("qrb"),it.tag);out.scrollIntoView({behavior:"smooth"})}
+
+document.addEventListener("submit",function(e){
+var f=e.target;e.preventDefault();
+if(f.id==="rf"){var fd=new FormData(f);var btn=f.querySelector("button");btn.disabled=true;
+photo(document.getElementById("ph").files[0]).then(function(p){
+var r=create({type:fd.get("type"),name:fd.get("name").trim(),cat:fd.get("cat"),desc:fd.get("desc").trim(),loc:fd.get("loc").trim(),date:fd.get("date"),contact:fd.get("contact").trim(),store:fd.get("store"),photo:p});
+if(!save()&&p){r.it.photo=null;save()}
+btn.disabled=false;result(r);f.reset();document.getElementById("st").style.display="none"})}
+if(f.id==="cf"){
+var it=byTag(document.getElementById("t").value),sid=document.getElementById("s").value.trim(),cs=document.getElementById("cs");
+var bad=function(m){cs.innerHTML="<h3>2. Collect</h3><div class='msg bad'>"+m+"</div>"};
+if(!it)return bad("No found item has that tag ID.");
+if(it.status==="claimed")return bad("This item has already been returned.");
+if(!/^[A-Za-z0-9]{6,12}$/.test(sid))return bad("Campus ID must be 6–12 letters or digits.");
+it.code=rnd(6,"0123456789");it.tries=0;it.exp=Date.now()+15*60000;it.claimant=sid;save();
+cs.innerHTML="<h3>2. Collect</h3><p>One-time code for <b>"+esc(it.name)+"</b> ("+(it.locker?"locker "+it.locker:"central desk")+"):</p><p><span class='code'>"+it.code+"</span></p><p class='mut sm'>Valid for 15 minutes. In a real deployment this is sent to your registered email or phone, not shown on screen.</p><form id='uf' data-id='"+it.id+"'><label for='u'>Enter code at the locker keypad</label><input id='u' inputmode='numeric' autocomplete='off' maxlength='6' required>"+pad()+"<button class='btn p' type='submit'>Unlock</button></form><div id='ur'></div>"}
+if(f.id==="uf"){
+var x=find(f.getAttribute("data-id")),v=document.getElementById("u").value.trim(),ur=document.getElementById("ur");
+if(!x||!x.code||Date.now()>x.exp){ur.innerHTML="<div class='msg bad'>Code expired. Request a new one.</div>";return}
+if(v!==x.code){x.tries=(x.tries||0)+1;if(x.tries>=3){x.code=null;save();ur.innerHTML="<div class='msg bad'>Too many wrong attempts. Code cancelled. Request a new one.</div>";return}save();ur.innerHTML="<div class='msg bad'>Incorrect code. "+(3-x.tries)+" attempt(s) left.</div>";return}
+var n=x.locker;release(x);x.code=null;save();f.style.display="none";
+ur.innerHTML="<div class='msg ok'><b>"+(n?"Locker "+n+" is open.":"Code accepted.")+"</b> "+(n?"Collect your item and close the door.":"Show this screen at the central desk to collect your item.")+" The code can no longer be used.</div>"}
+if(f.id==="af"){if(document.getElementById("pw").value===PASS){adminOK=true;route()}else document.getElementById("ae").textContent="Incorrect passcode."}
+});
+
+document.addEventListener("change",function(e){
+if(e.target.name==="type"){document.getElementById("st").style.display=e.target.value==="found"?"block":"none"}
+if(e.target.id==="ft"||e.target.id==="fc")fillList()});
+document.addEventListener("input",function(e){if(e.target.id==="q")fillList();if(e.target.id==="u")e.target.value=e.target.value.replace(/\D/g,"").slice(0,6)});
+function pad(){var k="";["1","2","3","4","5","6","7","8","9","c","0","b"].forEach(function(x){k+='<button type="button" class="key" data-key="'+x+'" aria-label="'+(x==="c"?"Clear":x==="b"?"Backspace":x)+'">'+(x==="c"?"C":x==="b"?"\u232B":x)+"</button>"});return'<div class="keys">'+k+"</div>"}
+
+document.addEventListener("click",function(e){
+var kb=e.target.closest("[data-key]");
+if(kb){var inp=document.getElementById("u"),k=kb.getAttribute("data-key");if(k==="c")inp.value="";else if(k==="b")inp.value=inp.value.slice(0,-1);else if(inp.value.length<6)inp.value+=k;inp.focus();return}
+var b=e.target.closest("[data-act]");if(!b)return;var a=b.getAttribute("data-act"),it=find(b.getAttribute("data-id"));
+if(a==="ret"&&it){release(it)}
+else if(a==="del"&&it){if(it.locker)S.lockers[it.locker-1]=null;if(it.matchId){var p=find(it.matchId);if(p){p.matchId=null;if(p.status==="matched")p.status="reported"}}S.items=S.items.filter(function(x){return x!==it})}
+else if(a==="reset"){if(!confirm("Delete all data in this browser?"))return;S={items:[],lockers:Array(10).fill(null)}}
+else if(a==="seed"){seed()}
+else if(a==="out"){adminOK=false}
+save();route()});
+
+function seed(){
+[{type:"found",name:"Blue steel water bottle",cat:"Bottles & other",desc:"Blue steel bottle with a dented base and a green sticker",loc:"Gate 2",date:today(),contact:"staff",store:"locker"},
+{type:"found",name:"Casio scientific calculator",cat:"Electronics",desc:"Black Casio fx-991 calculator, name scratched on the back",loc:"Lab B",date:today(),contact:"staff",store:"locker"},
+{type:"found",name:"Student ID card holder",cat:"ID / Cards",desc:"Brown leather card holder with two cards",loc:"Library",date:today(),contact:"staff",store:"central"},
+{type:"lost",name:"Black calculator",cat:"Electronics",desc:"Black Casio calculator lost after the exam",loc:"Lab B",date:today(),contact:"demo@campus.edu"}].forEach(function(d){create(d)})}
+
+route();
+})();
+</script>
+</body>
+</html>
